@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "m_todo")
-public class Todo {
+@Table(name = "m_task")
+public class Task {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
