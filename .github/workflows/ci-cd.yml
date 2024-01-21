@@ -23,7 +23,7 @@ jobs:
         run: mvn clean clean install -DskipTests
 
       - name: Upload to artifact
-        uses: action/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           name: yudoo-dev
           path: ${{ github.workspace}}/target/*.jar
