@@ -33,7 +33,7 @@ jobs:
     needs: build
     steps:
       - name: download artifact
-        uses: action/downlaod-artifact@v2
+        uses: actions/download-artifact@v2
         with:
           name: yudoo-dev
       - name: Deploy to app service
