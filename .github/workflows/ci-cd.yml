@@ -20,13 +20,25 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean clean install -DskipTests
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   steps:
-  #     - name: Deploy to Production
-  #       # Add your deployment script or commands here
-  #       run: |
-  #         echo "Deploying to production..."
+      - name: Upload to artifact
+        uses: action/upload-artifact@v2
+        with:
+          name: yudoo-dev
+          path: ${{ github.workspace}}/target/*.jar
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: download artifact
+        uses: action/downlaod-artifact@v2
+        with:
+          name: yudoo-dev
+      - name: Deploy to app service
+        uses: azure/webapps-deploy@vw
+        with:
+          app-name: yudooDev
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          package: '*.jar'
