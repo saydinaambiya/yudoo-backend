@@ -37,7 +37,7 @@ jobs:
         with:
           name: yudoo-dev
       - name: Deploy to app service
-        uses: azure/webapps-deploy@vw
+        uses: azure/webapps-deploy@v2
         with:
           app-name: yudooDev
           publish-profile: ${{ secrets.azureWebAppPublishProfile }}
