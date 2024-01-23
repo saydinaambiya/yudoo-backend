@@ -12,17 +12,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    @Autowired
     RandomStringGenerator randomStringGenerator;
-    @Autowired
+
     CategoryRepository categoryRepository;
 
-    public CategoryServiceImpl(RandomStringGenerator randomStringGenerator, CategoryRepository categoryRepository) {
-        this.randomStringGenerator = randomStringGenerator;
+    public CategoryServiceImpl(@Autowired CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
@@ -37,6 +36,8 @@ public class CategoryServiceImpl implements CategoryService {
     public Category create(Category category) {
         try {
             category.setCategoryId(randomStringGenerator.random());
+            category.setCategoryName(category.getCategoryName());
+            category.setCreatedAt(LocalDateTime.now());
             return categoryRepository.save(category);
         } catch (DataIntegrityViolationException e) {
             throw new EntityExistException();
