@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public abstract class CommonResponse {
     private String code;
-    private String status;
+    private boolean status;
     private String message;
 }

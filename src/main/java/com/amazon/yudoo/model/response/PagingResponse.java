@@ -19,7 +19,7 @@ public class PagingResponse<T> extends CommonResponse {
     public PagingResponse(String message, Page<T> page) {
         super.setCode("200");
         super.setMessage(message);
-        super.setStatus(HttpStatus.OK.name());
+        super.setStatus(true);
         this.data = page.getContent();
         this.count = page.getTotalElements();
         this.totalPage = page.getTotalPages();

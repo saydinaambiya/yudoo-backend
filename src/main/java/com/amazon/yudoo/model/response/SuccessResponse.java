@@ -12,7 +12,7 @@ public class SuccessResponse<T> extends CommonResponse {
     public SuccessResponse(String message, T data){
         super.setCode("200");
         super.setMessage(message);
-        super.setStatus(HttpStatus.OK.name());
+        super.setStatus(true);
         this.data = data;
     }
 }
