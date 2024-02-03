@@ -11,11 +11,6 @@ import java.time.Duration;
 @Configuration
 public class SpringConfiguration {
     @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
-
-    @Bean
     public RestTemplate restTemplate (RestTemplateBuilder builder){
         return builder.setConnectTimeout(Duration.ofMillis(3000)).setReadTimeout(Duration.ofMillis(3000)).build();
     }

@@ -18,12 +18,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
     AuthRepository authRepository;
     UserService userService;
 
-    @Autowired
-    ModelMapper modelMapper;
 
     @Autowired
     JwtUtil jwtUtil;
@@ -36,18 +34,19 @@ public class AuthServiceImpl implements AuthService{
     @Transactional
     @Override
     public String signUp(SignUpRequest signUpRequest) {
-        try {
-            UserCredential userCredential = modelMapper.map(signUpRequest, UserCredential.class);
-            UserCredential authResult = authRepository.save(userCredential);
-
-            User user = modelMapper.map(signUpRequest, User.class);
-            user.setUserCredential(authResult);
-            userService.updateById(user);
-
-            return jwtUtil.generateToken(user.getUserCredential().getEmail());
-        }catch (DataIntegrityViolationException e){
-          throw new EntityExistsException();
-        }
+//        try {
+//            UserCredential userCredential = modelMapper.map(signUpRequest, UserCredential.class);
+//            UserCredential authResult = authRepository.save(userCredential);
+//
+//            User user = modelMapper.map(signUpRequest, User.class);
+//            user.setUserCredential(authResult);
+//            userService.updateById(user);
+//
+//            return jwtUtil.generateToken(user.getUserCredential().getEmail());
+//        }catch (DataIntegrityViolationException e){
+//          throw new EntityExistsException();
+//        }
+        return null;
     }
 
     @Transactional
@@ -56,12 +55,12 @@ public class AuthServiceImpl implements AuthService{
         try {
             Optional<UserCredential> userCredential = authRepository.findById(signInRequest.getEmail());
             if (userCredential.isEmpty()) throw new NotFoundException();
-            if (!userCredential.get().getPassword().equals(signInRequest.getPassword())){
+            if (!userCredential.get().getPassword().equals(signInRequest.getPassword())) {
                 throw new UnauthorizedException("Password not matched");
             }
 
             return jwtUtil.generateToken(signInRequest.getEmail());
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
