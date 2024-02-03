@@ -15,7 +15,7 @@
 //        this.jwtUtil = jwtUtil;
 //    }
 //
-//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)throws Exception{
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object hanler)throws Exception{
 //        if (request.getRequestURI().contains("/login")) {
 //            return true;
 //        }
