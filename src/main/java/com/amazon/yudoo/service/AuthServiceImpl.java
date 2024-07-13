@@ -2,6 +2,7 @@ package com.amazon.yudoo.service;
 
 import com.amazon.yudoo.exception.NotFoundException;
 import com.amazon.yudoo.exception.UnauthorizedException;
+import com.amazon.yudoo.model.Role;
 import com.amazon.yudoo.model.User;
 import com.amazon.yudoo.model.UserCredential;
 import com.amazon.yudoo.model.request.SignInRequest;
@@ -34,19 +35,22 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public String signUp(SignUpRequest signUpRequest) {
-//        try {
-//            UserCredential userCredential = modelMapper.map(signUpRequest, UserCredential.class);
-//            UserCredential authResult = authRepository.save(userCredential);
-//
-//            User user = modelMapper.map(signUpRequest, User.class);
-//            user.setUserCredential(authResult);
-//            userService.updateById(user);
-//
-//            return jwtUtil.generateToken(user.getUserCredential().getEmail());
-//        }catch (DataIntegrityViolationException e){
-//          throw new EntityExistsException();
-//        }
-        return null;
+        try {
+            UserCredential userCredential = new UserCredential();
+            userCredential.setEmail(signUpRequest.getEmail());
+            userCredential.setPassword(signUpRequest.getPassword());
+            userCredential.setRole(Role.BASIC);
+            userCredential.setActive(true);
+            UserCredential authResult = authRepository.save(userCredential);
+
+            User user = new User();
+            user.setUserCredential(authResult);
+            userService.updateById(user);
+
+            return jwtUtil.generateToken(user.getUserCredential().getEmail());
+        }catch (DataIntegrityViolationException e){
+          throw new EntityExistsException();
+        }
     }
 
     @Transactional
@@ -56,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
             Optional<UserCredential> userCredential = authRepository.findById(signInRequest.getEmail());
             if (userCredential.isEmpty()) throw new NotFoundException();
             if (!userCredential.get().getPassword().equals(signInRequest.getPassword())) {
-                throw new UnauthorizedException("Password not matched");
+                throw new UnauthorizedException("Email and Password not matched");
             }
 
             return jwtUtil.generateToken(signInRequest.getEmail());
