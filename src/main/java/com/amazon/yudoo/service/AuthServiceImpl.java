@@ -19,10 +19,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService{
     AuthRepository authRepository;
     UserService userService;
 
+    @Autowired
+    ModelMapper modelMapper;
 
     @Autowired
     JwtUtil jwtUtil;
@@ -64,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
             }
 
             return jwtUtil.generateToken(signInRequest.getEmail());
-        } catch (Exception e) {
+        }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
     }
