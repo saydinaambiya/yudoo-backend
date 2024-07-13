@@ -1,9 +1,6 @@
 package com.amazon.yudoo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -16,6 +13,10 @@ public class UserCredential {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "is_active")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
+
+    @Column(name = "is_active", columnDefinition = "boolean default true")
     private boolean isActive;
 }

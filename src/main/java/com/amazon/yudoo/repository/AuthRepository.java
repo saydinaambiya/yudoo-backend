@@ -1,7 +1,8 @@
 package com.amazon.yudoo.repository;
 
 import com.amazon.yudoo.model.UserCredential;
+import com.amazon.yudoo.model.request.SignUpRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AuthRepository extends JpaRepository<UserCredential, String> {
+public interface AuthRepository extends JpaRepository<UserCredential, String>{
 }

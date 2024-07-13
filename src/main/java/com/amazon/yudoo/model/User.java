@@ -21,6 +21,9 @@ public class User {
     @Column(name = "profile_picture_url")
     private String profilePictureUrl;
 
+    @Column(name = "is_active")
+    private boolean isActive = true;
+
     @Override
     public String toString() {
         return "User{" +
