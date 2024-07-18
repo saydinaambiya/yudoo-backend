@@ -57,9 +57,10 @@ public class AuthServiceImpl implements AuthService {
             user.setName(signUpRequest.getName());
             user.setUserCredential(savedUserCredential);
             user.setProfilePictureUrl(signUpRequest.getProfilePictureUrl());
-            user.setActive(true);
+            String token = jwtUtil.generateToken(user.getUserCredential().getEmail());
+            user.setRememberToken(token);
             userService.create(user);
-            return jwtUtil.generateToken(user.getUserCredential().getEmail());
+            return token;
         } catch (DataIntegrityViolationException e) {
             throw new EntityExistsException();
         }
@@ -68,15 +69,15 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public String signIn(SignInRequest signInRequest) {
-            Optional<UserCredential> userCredential = authRepository.findById(signInRequest.getEmail());
-            if (userCredential.isEmpty()) throw new NotFoundException();
-            String rawPassword = signInRequest.getPassword();
-            String encodedPassword = userCredential.get().getPassword();
-            if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-                throw new UnauthorizedException("Email and Password not matched");
-            }
+        Optional<UserCredential> userCredential = authRepository.findById(signInRequest.getEmail());
+        if (userCredential.isEmpty()) throw new NotFoundException();
+        String rawPassword = signInRequest.getPassword();
+        String encodedPassword = userCredential.get().getPassword();
+        if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
+            throw new UnauthorizedException("Email and Password not matched");
+        }
 
-            return jwtUtil.generateToken(signInRequest.getEmail());
+        return jwtUtil.generateToken(signInRequest.getEmail());
 
     }
 }
