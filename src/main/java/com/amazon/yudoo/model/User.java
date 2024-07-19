@@ -1,15 +1,15 @@
 package com.amazon.yudoo.model;
 
+import com.amazon.yudoo.model.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
+import java.sql.Timestamp;
+
 @Data
+@Entity
 @Table(name = "m_user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class User extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email", referencedColumnName = "email")
@@ -21,16 +21,7 @@ public class User {
     @Column(name = "profile_picture_url")
     private String profilePictureUrl;
 
-    @Column(name = "is_active")
-    private boolean isActive = true;
+    private Timestamp emailVerificationDate;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userCredential=" + userCredential +
-                ", name='" + name + '\'' +
-                ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                '}';
-    }
+    private String rememberToken;
 }

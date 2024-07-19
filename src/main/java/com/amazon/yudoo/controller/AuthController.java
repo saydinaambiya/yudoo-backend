@@ -7,6 +7,7 @@ import com.amazon.yudoo.model.response.ErrorResponse;
 import com.amazon.yudoo.model.response.SuccessResponse;
 import com.amazon.yudoo.service.AuthService;
 import com.amazon.yudoo.util.UrlMapping;
+import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,14 @@ public class AuthController {
 
     @PostMapping(UrlMapping.SIGNUP)
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
-        String token = authService.signUp(signUpRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse<>("Success Sign Up", token));
+        try {
+            String token = authService.signUp(signUpRequest);
+            return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse<>("Success Sign Up", token));
+        } catch (EntityExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("400", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("500", e.getMessage()));
+        }
     }
 
     @PostMapping(UrlMapping.SIGNIN)
