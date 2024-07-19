@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
             userService.create(user);
             return token;
         } catch (DataIntegrityViolationException e) {
-            throw new EntityExistsException();
+            throw new EntityExistsException("Email is already taken");
         }
     }
 
