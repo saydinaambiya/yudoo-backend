@@ -1,6 +1,7 @@
 package com.amazon.yudoo.model;
 
 import com.amazon.yudoo.model.base.BaseEntity;
+import com.amazon.yudoo.model.base.BaseEntityAudit;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -9,10 +10,10 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @Table(name = "m_user")
-public class User extends BaseEntity {
+public class User extends BaseEntityAudit {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "email", referencedColumnName = "email")
