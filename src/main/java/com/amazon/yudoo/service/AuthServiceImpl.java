@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new UnauthorizedException("Email and Password not matched");
         }
-
+        
         return jwtUtil.generateToken(signInRequest.getEmail());
 
     }
