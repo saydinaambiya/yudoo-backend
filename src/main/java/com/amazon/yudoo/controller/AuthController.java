@@ -5,6 +5,7 @@ import com.amazon.yudoo.model.request.SignInRequest;
 import com.amazon.yudoo.model.request.SignUpRequest;
 import com.amazon.yudoo.model.response.ErrorResponse;
 import com.amazon.yudoo.model.response.SuccessResponse;
+import com.amazon.yudoo.model.response.TokenResponse;
 import com.amazon.yudoo.service.AuthService;
 import com.amazon.yudoo.util.UrlMapping;
 import jakarta.persistence.EntityExistsException;
@@ -28,7 +29,7 @@ public class AuthController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
         try {
             String token = authService.signUp(signUpRequest);
-            return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse<>("Success Sign Up", token));
+            return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse<>("Success Sign Up", new TokenResponse(token)));
         } catch (EntityExistsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("400", e.getMessage()));
         } catch (Exception e) {
@@ -40,7 +41,7 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody SignInRequest signInRequest) {
         try {
             String token = authService.signIn(signInRequest);
-            return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse<>("Success Sign In", token));
+            return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse<>("Success Sign In", new TokenResponse(token)));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("400", e.getMessage()));
         } catch (ResourceAccessException e) {
