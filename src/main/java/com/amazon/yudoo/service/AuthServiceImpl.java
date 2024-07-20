@@ -47,7 +47,9 @@ public class AuthServiceImpl implements AuthService {
         try {
             UserCredential userCredential = new UserCredential();
             userCredential.setEmail(signUpRequest.getEmail());
+            String token = jwtUtil.generateToken(signUpRequest.getEmail());
             userCredential.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+            userCredential.setRememberToken(token);
             userCredential.setRole(Role.BASIC);
             userCredential.setActive(true);
             UserCredential savedUserCredential = authRepository.save(userCredential);
@@ -57,8 +59,6 @@ public class AuthServiceImpl implements AuthService {
             user.setName(signUpRequest.getName());
             user.setUserCredential(savedUserCredential);
             user.setProfilePictureUrl(signUpRequest.getProfilePictureUrl());
-            String token = jwtUtil.generateToken(user.getUserCredential().getEmail());
-            user.setRememberToken(token);
             userService.create(user);
             return token;
         } catch (DataIntegrityViolationException e) {
@@ -76,8 +76,11 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new UnauthorizedException("Email and Password not matched");
         }
-        
-        return jwtUtil.generateToken(signInRequest.getEmail());
+        String token = jwtUtil.generateToken(signInRequest.getEmail());
+        userCredential
+                .get()
+                .setRememberToken(token);
+        return token;
 
     }
 }

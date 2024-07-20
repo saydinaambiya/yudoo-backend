@@ -13,6 +13,9 @@ public class UserCredential {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "remember_token")
+    private String rememberToken;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
