@@ -15,9 +15,8 @@ import java.sql.Timestamp;
 @Table(name = "m_user")
 public class User extends BaseEntityAudit {
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "email", referencedColumnName = "email")
-    private UserCredential userCredential;
+    @JoinColumn(name = "email", referencedColumnName = "email",table = "m_user_credential")
+    private String email;
 
     @Column(name = "name", nullable = false)
     private String name;
