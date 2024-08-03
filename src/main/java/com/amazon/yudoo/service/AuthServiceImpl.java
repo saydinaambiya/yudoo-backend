@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
 
             User user = new User();
             user.setName(signUpRequest.getName());
-            user.setUserCredential(savedUserCredential);
+            user.setEmail(signUpRequest.getEmail());
             user.setProfilePictureUrl(signUpRequest.getProfilePictureUrl());
             userService.create(user);
             return token;
