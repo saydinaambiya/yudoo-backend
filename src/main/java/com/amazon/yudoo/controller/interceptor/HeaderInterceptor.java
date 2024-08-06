@@ -17,8 +17,13 @@ public class HeaderInterceptor implements HandlerInterceptor {
     JwtUtil jwtUtil;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("uri: " + request.getRequestURI());
         if (request.getRequestURI().contains(UrlMapping.SIGNIN)
-                || Objects.equals(request.getRequestURI(), UrlMapping.BASE + UrlMapping.SIGNUP) || Objects.equals(request.getRequestURI(), "/api/v0/")) {
+                || Objects.equals(request.getRequestURI(), UrlMapping.BASE + UrlMapping.SIGNUP)
+                || Objects.equals(request.getRequestURI(), "/api/v0/")
+                || Objects.equals(request.getRequestURI(), UrlMapping.OPEN_API + "/index.html")
+                || Objects.equals(request.getRequestURI(), "/v3/api-docs")
+        ) {
             return true;
         }
         String token = request.getHeader("Authorization");

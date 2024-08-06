@@ -1,6 +1,7 @@
 package com.amazon.yudoo.configuration;
 
 import com.amazon.yudoo.util.PasswordEncoderGenerator;
+import com.amazon.yudoo.util.UrlMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,6 +37,10 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("api/v0/auth/**")
+                        .permitAll()
+                        .requestMatchers(UrlMapping.OPEN_API + "/**")
+                        .permitAll()
+                        .requestMatchers("v3/api-docs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

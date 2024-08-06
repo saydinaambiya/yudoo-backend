@@ -9,6 +9,10 @@ import com.amazon.yudoo.model.response.SuccessResponse;
 import com.amazon.yudoo.model.response.TokenResponse;
 import com.amazon.yudoo.service.AuthService;
 import com.amazon.yudoo.util.UrlMapping;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityExistsException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,16 @@ public class AuthController {
     private AuthService authService;
 
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Success sign up",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SuccessResponse.class))}
+            )
+    })
     @PostMapping(UrlMapping.SIGNUP)
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         try {

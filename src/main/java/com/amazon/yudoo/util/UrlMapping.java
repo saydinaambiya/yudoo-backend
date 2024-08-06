@@ -7,4 +7,5 @@ public abstract class UrlMapping {
     public final static String SIGNIN = "/auth/signin";
     public final static String SIGNUP = "/auth/signup";
     public final static String AUTH = "/auth";
+    public final static String OPEN_API = "/swagger-ui";
 }
